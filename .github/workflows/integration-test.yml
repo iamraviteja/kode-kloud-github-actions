@@ -2,6 +2,10 @@ name: Integration Testing Workflow
 
 on:
     workflow_dispatch:
+    push:
+      branches:
+        - main
+        - 'feature/*'
 
 env:
     MONGO_URI: ${{ vars.MONGO_URI }}
@@ -27,3 +31,8 @@ jobs:
         - name: Run Tests
           run: npm test
         
+        - name: Upload Test Report HTML
+          uses: actions/upload-artifact@v4
+          with:
+            name: test-report
+            path: reports/test-report.html
