@@ -1,0 +1,29 @@
+name: Integration Testing Workflow
+
+on:
+    workflow_dispatch:
+
+env:
+    MONGO_URI: ${{ vars.MONGO_URI }}
+    MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+    MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+
+jobs:
+    integration-testing:
+        name: integration testing
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+        
+        - name: Setup NodeJS Version 20
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20'
+        
+        - name: Install Packages
+          run: npm ci
+
+        - name: Run Tests
+          run: npm test
+        
