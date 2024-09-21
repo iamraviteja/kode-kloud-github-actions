@@ -6,6 +6,10 @@ on:
       branches:
         - main
         - 'feature/*'
+    pull_request:
+      types: [opened, reopened]
+      branches:
+        - main
 
 env:
     MONGO_URI: ${{ vars.MONGO_URI }}
@@ -30,6 +34,30 @@ jobs:
 
         - name: Run Tests
           run: npm test
+        
+        - name: Store Result In Variable
+          shell: bash
+          id: test_results
+          if: ${{ github.event_name == 'pull_request' }}
+          run: |
+            echo 'TEST_OUTPUT<<EOF' > $GITHUB_OUTPUT
+            cat output.txt >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
+        
+        - name: Comment PR
+          uses: actions/github-script@v7
+          if: ${{ github.event_name == 'pull_request' }}
+          env:
+            TEST_OUPUT: ${{ steps.test_results.outputs.TEST_OUTPUT }}
+          with:
+            github-token: ${{ github.token }}
+            script: |
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: process.env.TEST_OUPUT
+              })
         
         - name: Upload Test Report HTML
           uses: actions/upload-artifact@v4
