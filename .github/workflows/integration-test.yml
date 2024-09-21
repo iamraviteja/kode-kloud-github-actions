@@ -36,12 +36,16 @@ jobs:
           run: npm test
         
         - name: Store Result In Variable
+          shell: bash
+          id: test_results
           run: |
+            echo 'TEST_OUTPUT<<EOF' > $GITHUB_OUTPUT
             cat output.txt >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
         
         - name: Comment PR
           run: |
-            echo $GITHUB_OUTPUT
+            echo ${{ steps.test_results.outputs.TEST_OUTPUT }}
         
         - name: Upload Test Report HTML
           uses: actions/upload-artifact@v4
