@@ -35,9 +35,12 @@ jobs:
         - name: Run Tests
           run: npm test
         
-        - name: Comment Results On PR
+        - name: Store Result In Variable
           run: |
-            echo "This is output\n"
+            cat output.txt >> $GITHUB_OUTPUT
+        
+        - name: Comment PR
+          run: |
             echo $GITHUB_OUTPUT
         
         - name: Upload Test Report HTML

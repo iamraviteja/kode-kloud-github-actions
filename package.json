@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --env-file .env ./src/index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --no-color 1> output.txt"
   },
   "keywords": [],
   "author": "",

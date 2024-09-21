@@ -17,7 +17,7 @@ mongoose
     dbName: 'sample_guides'
   })
   .then(function () {
-    console.log("MongoDB Connection Successful");
+    // console.log("MongoDB Connection Successful");
   })
   .catch(function(err){
     console.log('connection error',err);
@@ -74,7 +74,7 @@ app.get("/ready", function (req, res) {
 });
 
 const server = app.listen(3000, () => {
-  console.log("Server successfully running on port - " + 3000);
+  // console.log("Server successfully running on port - " + 3000);
 });
 
 module.exports = {app, server};
