@@ -6,6 +6,10 @@ on:
       branches:
         - main
         - 'feature/*'
+    pull_request:
+      types: [opened, reopened]
+      branches:
+        - main
 
 env:
     MONGO_URI: ${{ vars.MONGO_URI }}
@@ -30,6 +34,11 @@ jobs:
 
         - name: Run Tests
           run: npm test
+        
+        - name: Comment Results On PR
+          run: |
+            echo "This is output\n"
+            echo $GITHUB_OUTPUT
         
         - name: Upload Test Report HTML
           uses: actions/upload-artifact@v4
