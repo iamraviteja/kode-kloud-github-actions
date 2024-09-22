@@ -15,8 +15,6 @@ jobs:
     docker:
         name: docker image build
         runs-on: ubuntu-latest
-        permissions:
-          packages: write
         steps:
         - name: Checkout Repository
           uses: actions/checkout@v4
