@@ -4,7 +4,7 @@ on:
     workflow_dispatch:
 
 env:
-    MONGO_URI: 'mongodb://localhost:27017/sample_guides'
+    MONGO_URI: 'mongodb://admin:admin@localhost:27017/sample_guides'
     MONGO_USERNAME: 'admin'
     MONGO_PASSWORD: 'admin'
 

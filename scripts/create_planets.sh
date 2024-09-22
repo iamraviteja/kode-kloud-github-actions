@@ -1,7 +1,14 @@
 #!/bin/bash
 
-# MongoDB connection string - modify as needed
-MONGO_URI="mongodb://localhost:27017/sample_guides"
+# MongoDB connection details
+MONGO_HOST="localhost"
+MONGO_PORT="27017"
+MONGO_DB="sample_guides"
+MONGO_USER="admin"
+MONGO_PASS="admin"
+
+# Construct the MongoDB URI with authentication
+MONGO_URI="mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}"
 
 # Create a temporary JavaScript file for MongoDB commands
 cat << EOF > create_planets.js
