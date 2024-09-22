@@ -33,7 +33,7 @@ jobs:
           uses: docker/build-push-action@v6
           with:
             push: true
-            tags: ghrc.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
+            tags: ghrc.io/${{ github.repository_owner }}/solar-system:latest
         
         - name: Test Docker Image
           run: |
@@ -43,7 +43,7 @@ jobs:
                 -e MONGO_URI=$MONGO_URI \
                 -e MONGO_USERNAME=$MONGO_USERNAME \
                 -e MONGO_PASSWORD=$MONGO_PASSWORD \
-                ghrc.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
+                ghrc.io/${{ github.repository_owner }}/solar-system:latest
             
             echo Testing Image URL using wget
             wget -q -O - 127.0.0.1:3000/live | grep live
