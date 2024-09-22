@@ -22,18 +22,19 @@ jobs:
         - name: Set up Docker Buildx
           uses: docker/setup-buildx-action@v3
         
-        - name: GHCR Login
+        - name: Login To Docker Hub
           uses: docker/login-action@v3
           with:
-            registry: ghcr.io
-            username: ${{ github.repository_owner }}
-            password: ${{ secrets.PACKAGES_PERMISSION }}
+            username: ${{ vars.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
         
         - name: Build And Push
           uses: docker/build-push-action@v6
           with:
             push: true
-            tags: ghrc.io/solar-system:latest
+            tags: |
+              ${{ github.repository_owner }}/solar-system:latest
+              
         
         - name: Test Docker Image
           run: |
@@ -43,7 +44,7 @@ jobs:
                 -e MONGO_URI=$MONGO_URI \
                 -e MONGO_USERNAME=$MONGO_USERNAME \
                 -e MONGO_PASSWORD=$MONGO_PASSWORD \
-                ghrc.io/${{ github.repository_owner }}/solar-system:latest
+                ${{ github.repository_owner }}/solar-system:latest
             
             echo Testing Image URL using wget
             wget -q -O - 127.0.0.1:3000/live | grep live
