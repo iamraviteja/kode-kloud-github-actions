@@ -33,7 +33,7 @@ jobs:
           with:
             push: true
             tags: |
-              ${{ github.repository_owner }}/solar-system:latest
+              ${{ vars.DOCKERHUB_USERNAME }}/solar-system:latest
               
         
         - name: Test Docker Image
