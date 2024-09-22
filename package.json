@@ -4,6 +4,7 @@
   "description": "Repo for following the github actions course in kode kloud",
   "main": "index.js",
   "scripts": {
+    "start": "node ./src/index.js",
     "dev": "node --env-file .env ./src/index.js",
     "test": "jest --no-color 2> output.txt"
   },
