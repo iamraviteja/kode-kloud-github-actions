@@ -1,0 +1,63 @@
+name: Integration Testing Service Container Workflow
+
+on:
+    workflow_dispatch:
+
+env:
+    MONGO_URI: 'mongodb+srv://localhost:27017/sample_guides'
+    MONGO_USERNAME: 'admin'
+    MONGO_PASSWORD: 'admin'
+
+jobs:
+    integration-testing-with-sc:
+        name: integration testing with service containers
+        runs-on: ubuntu-latest
+        services:
+            mongo-db:
+                image: mongo
+                env:
+                    MONGO_INITDB_ROOT_USERNAME: admin
+                    MONGO_INITDB_ROOT_PASSWORD: admin
+                    MONGO_INITDB_DATABASE: sample_guides
+                ports: 
+                - 27017:27017
+        steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+        
+        - name: Setup NodeJS Version 20
+          uses: actions/setup-node@v4
+          with:
+            node-version: '20'
+        
+        - name: Cache NPM Dependencies
+          uses: actions/cache@v4
+          with:
+            path: node_modules
+            key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+        
+        - name: Install mongosh
+          run: |
+            sudo apt-get install gnupg
+            wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | sudo tee /etc/apt/trusted.gpg.d/server-7.0.asc
+            echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+            sudo apt-get update
+            sudo apt-get install -y mongodb-mongosh
+            mongosh --version
+
+        - name: Initalize MongoDB With Data
+          run: |
+            chmod +x ./scripts/create_planets.sh
+            ./scripts/create_planets.sh
+            
+        - name: Install Packages
+          run: npm ci
+
+        - name: Run Tests
+          run: npm test
+        
+        - name: Upload Test Report HTML
+          uses: actions/upload-artifact@v4
+          with:
+            name: test-report
+            path: reports/test-report.html
