@@ -29,8 +29,10 @@ jobs:
         - name: Build And Push
           uses: docker/build-push-action@v6
           with:
-            push: false
-            tags: ${{ github.actor }}/solar-system:${{ github.sha }}
+            context: .
+            push: true
+            tags: |
+                ghrc.io/${{ github.actor }}/solar-system:${{ github.sha }}
         
         - name: Test Docker Image
           run: |
