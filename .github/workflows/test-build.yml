@@ -33,7 +33,7 @@ jobs:
           uses: docker/build-push-action@v6
           with:
             push: true
-            tags: ghrc.io/${{ github.repository_owner }}/solar-system:latest
+            tags: ghrc.io/solar-system:latest
         
         - name: Test Docker Image
           run: |
