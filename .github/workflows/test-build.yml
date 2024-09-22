@@ -32,7 +32,6 @@ jobs:
             context: .
             push: true
             tags: |
-                ${{ github.repository_owner }}/solar-system:${{ github.sha }}
                 ghrc.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
         
         - name: Test Docker Image
