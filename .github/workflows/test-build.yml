@@ -1,0 +1,46 @@
+name: Test Build Docker Workflow
+
+on:
+    workflow_dispatch:
+    push:
+      branches:
+        - main
+
+env:
+    MONGO_URI: ${{ vars.MONGO_URI }}
+    MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+    MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+
+jobs:
+    docker:
+        name: docker image build
+        runs-on: ubuntu-latest
+        steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v4
+        
+        - name: GHCR Login
+          uses: docker/login-action@v3
+          with:
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ github.token }}
+        
+        - name: Build And Push
+          uses: docker/build-push-action@v6
+          with:
+            push: false
+            tags: ${{ github.actor }}/solar-system:${{ github.sha }}
+        
+        - name: Test Docker Image
+          run: |
+            docker images
+            docker run --name solar-system-app -d \
+                -p 3000:3000 \
+                -e MONGO_URI=$MONGO_URI \
+                -e MONGO_USERNAME=$MONGO_USERNAME \
+                -e MONGO_PASSWORD=$MONGO_PASSWORD \
+                ${{ github.actor }}/solar-system:${{ github.sha }}
+            
+            echo Testing Image URL using wget
+            wget -q -O - 127.0.0.1:3000/live | grep live
