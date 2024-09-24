@@ -77,4 +77,20 @@ const server = app.listen(3000, () => {
   // console.log("Server successfully running on port - " + 3000);
 });
 
+/**
+ *  Gracefull shutdown of app
+ *  SIGINT : 
+ *  SIGTERM
+ *  SIGKILL
+ */
+
+process.on('SIGINT', () => {
+  console.log('SIGINT Process is started');
+})
+
+process.on('SIGTERM', () => {
+  console.log('SIGTERM Process is started');
+})
+
+
 module.exports = {app, server};
