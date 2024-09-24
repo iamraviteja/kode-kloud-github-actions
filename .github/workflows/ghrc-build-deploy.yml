@@ -40,23 +40,24 @@ jobs:
             tags: ${{ steps.meta.outputs.tags }}
             labels: ${{ steps.meta.outputs.labels }}
         
-        - name: Generate artifact attestation
-          uses: actions/attest-build-provenance@v1
-          with:
-            subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-            subject-digest: ${{ steps.push.outputs.digest }}
-            push-to-registry: true
+        # - name: Generate artifact attestation
+        #   uses: actions/attest-build-provenance@v1
+        #   with:
+        #     subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+        #     subject-digest: ${{ steps.push.outputs.digest }}
+        #     push-to-registry: true
               
         
-        # - name: Test Docker Image
-        #   run: |
-        #     docker images
-        #     docker run --name solar-system-app -d \
-        #         -p 3000:3000 \
-        #         -e MONGO_URI=$MONGO_URI \
-        #         -e MONGO_USERNAME=$MONGO_USERNAME \
-        #         -e MONGO_PASSWORD=$MONGO_PASSWORD \
-        #         
+        - name: Test Docker Image
+          run: |
+            docker images
+            docker run --name solar-system-app -d \
+                -p 3000:3000 \
+                -e MONGO_URI=$MONGO_URI \
+                -e MONGO_USERNAME=$MONGO_USERNAME \
+                -e MONGO_PASSWORD=$MONGO_PASSWORD \
+                ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:main
+                
             
-        #     echo Testing Image URL using wget
-        #     wget -q -O - 127.0.0.1:3000/live | grep live
+            echo Testing Image URL using wget
+            wget -q -O - 127.0.0.1:3000/live | grep live
