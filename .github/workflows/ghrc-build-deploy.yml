@@ -50,6 +50,7 @@ jobs:
         
         - name: Test Docker Image
           run: |
+            docker pull ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:main
             docker images
             docker run --name solar-system-app -d \
                 -p 3000:3000 \
