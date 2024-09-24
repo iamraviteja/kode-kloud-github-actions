@@ -50,14 +50,14 @@ jobs:
         
         - name: Test Docker Image
           run: |
-            docker pull ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:main
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
             docker images
             docker run --name solar-system-app -d \
                 -p 3000:3000 \
                 -e MONGO_URI=$MONGO_URI \
                 -e MONGO_USERNAME=$MONGO_USERNAME \
                 -e MONGO_PASSWORD=$MONGO_PASSWORD \
-                ${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}:main
+                ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
                 
             
             echo Testing Image URL using wget
