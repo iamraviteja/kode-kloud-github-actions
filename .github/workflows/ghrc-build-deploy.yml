@@ -23,6 +23,7 @@ jobs:
         - name: Login To GHRC
           uses: docker/login-action@v3
           with:
+            registry: ${{ env.REGISTRY }}
             username: ${{ github.actor }}
             password: ${{ secrets.GITHUB_TOKEN }}
         
